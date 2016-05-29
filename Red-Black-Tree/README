@@ -1,0 +1,71 @@
+This is an implementation of a Red-Black Tree in Java:
+
+Design Decisions:
+-----------------
+
+I chose to use the sentinel instead of regular null pointers because it makes
+removeFixup() easier and more efficient.  Every RedBlackNode instantiated has
+all of it's pointers pointed to nil.  The root at all times will have it's
+parent pointer to nil. The remove and delete algorithm's are based on the
+course textbook and so are the leftRotate(RedBlackNode x) and
+rightRotate(RedBlackNode y) functions.
+
+After an insertion of an element using insert(), we always call insertFixup()
+to ensure that red-black properties are maintained.  While when deleteing, we
+only call deleteFixup when a certain condition( x == BLACK) is true.
+
+Since we are only concerned with deleting the key from the tree, we will begin
+our delete(RedBlackNode v) function with a call to search(v.key) which will
+ensure us that we are deleting the correct node.
+
+I have implemented the numSmaller(int) and numGreater(int) functions by keeping
+track of how many elements are to the left (numLeft) and to the right (numRight)
+of each node.  They both contain the number of elements to the left or right of
+a given node, not including that node itself.
+
+This value is updated when a node is inserted and maintained by the functions
+leftRotateFixup(RedBlackNode) and rightRotateFixup(RedBlackNode) which update
+these variables when a rotation occurs. This value is also updated during the
+deletion of a node by the function called fixNodeData(RedBlackNode, int).
+
+My size() function checks the size of the roots numLeft and numRight variables,
+adds them and adds one to return the answer.  This operation is performed in
+O(1) time.
+
+In the program, I am checking for the case where a particular RedBlackNode has
+a pointer pointing to nil, since this operation is very common, I have a
+function called isNil(RedBlackNode), which returns a boolean value of whether
+the argument is nil or not.  I have chosen my search(int key) function to be
+iterative when it easily could have been recursive because the textbook
+mentions that an iterative search is always faster than a recursive one.
+
+Duplicate RedBlackNodes are thought of as being slightly greater than its
+counterpart with the same key.  The insert() function takes care of this
+by having to cases in it's while loop, one for < and one for =>.  The
+function fixNodeData() takes care of this during deletion as also having two
+cases.
+
+I have chosen to represent, RED as the integer value 1 and BLACK as the integer
+value 0. Both these are declared as final in this class' instance variables.
+These values are assigned to the 'color' variable.
+
+I chose the object RedBlackNode class to have seven instance variables which are
+all declared public as per the assignment specifications.  Each instance of a
+RedBlackNode holds a Comparable "key", which is the key of the RedBlackNode.  It
+also holds another integer "color" which is assigned "0" for BLACK and "1" for
+RED.  The integer variable "numSmaller" holds the elements to the left of a
+given node and "numGreater" holds the elements to the right of a given node, not
+inluding the node itself.
+
+Each instance also holds a RedBlackNode pointer to the node's "parent", "left"
+child and "right" child.  These values are assigned to nil when a node is
+instantiated.
+
+The constructor that takes in a Comparable argument assigns that value to the key
+of the node. The empty constructor is there to test Prof. Pitt's test case and
+also in case we want to just create a RedBlackNode and initialize its key later.
+
+I have chosen to use the sentinel as it is an easier and more
+efficient way to implement Red Black Trees.  The sentinel (nil) is declared
+in the RedBlackTree class as it is most referenced there, in this class
+we initialize the left/right/parent pointers with a static reference to nil.
